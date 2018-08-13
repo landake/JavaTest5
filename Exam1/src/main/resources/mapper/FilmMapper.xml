@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="film">
+  <resultMap id="defaultResultMap" type="com.hand.model.Film" >
+    <result column="fild_id" property="film_id" />
+    <result column="title" property="titile" />
+    <result column="language_id" property="language_id" />
+    <result column="last_update" property="last_update" />
+  </resultMap>
+  <sql id="defaultList" >
+        film_id,title,description,language_id,last_update
+    </sql>
+  <select id="selectById" timeout="30" resultMap="defaultResultMap" parameterType="java.lang.Integer">
+    select <include refid="defaultList" /> from film where film_id=#{id}
+  </select>
+  <select id="selectId" timeout="30" resultType="java.lang.Integer">
+        select max(film_id) from film
+    </select>
+
+  <delete id="deleteaFilm" parameterType="java.lang.Integer" timeout="30">
+        delete from film where film_id = #{film_id};
+    </delete>
+  <insert id="insert" parameterType="com.hand.model.Film" keyProperty="film_id" useGeneratedKeys="true" timeout="30">
+        insert into film (title,description,language_id,last_update)
+        values (#{title},#{description},#{language_id},now())
+    </insert>
+</mapper>
